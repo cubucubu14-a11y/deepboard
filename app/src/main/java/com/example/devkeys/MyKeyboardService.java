@@ -1,6 +1,5 @@
 package com.example.devkeys;
 
-import android.content.res.ColorStateList;
 import android.inputmethodservice.InputMethodService;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,8 +7,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import com.google.android.material.button.MaterialButton;
 
 public class MyKeyboardService extends InputMethodService {
     private boolean isSelectMode = false;
@@ -43,14 +42,15 @@ public class MyKeyboardService extends InputMethodService {
         view.findViewById(R.id.btnTab).setOnClickListener(v -> sendKey(KeyEvent.KEYCODE_TAB));
         view.findViewById(R.id.btnEnter).setOnClickListener(v -> sendKey(KeyEvent.KEYCODE_ENTER));
 
-        MaterialButton btnSelect = view.findViewById(R.id.btnSelect);
+        Button btnSelect = view.findViewById(R.id.btnSelect);
         btnSelect.setOnClickListener(v -> {
             isSelectMode = !isSelectMode;
             if (isSelectMode) {
-                btnSelect.setBackgroundTintList(ColorStateList.valueOf(0xFFFF9800)); // Oranye
+                btnSelect.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFF9800)); // Oranye
                 btnSelect.setTextColor(0xFFFFFFFF);
             } else {
-                btnSelect.setBackgroundTintList(ColorStateList.valueOf(0xFF3A3C40)); // Abu-abu
+                // Kembalikan ke warna abu-abu (bg_btn_primary)
+                btnSelect.setBackgroundResource(R.drawable.bg_btn_primary);
                 btnSelect.setTextColor(0xFFAAAAAA);
             }
         });
