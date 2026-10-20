@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
@@ -85,7 +86,7 @@ public class MyKeyboardService extends InputMethodService {
         setupRepeat(mainKeyboardView.findViewById(R.id.btnUp), KeyEvent.KEYCODE_DPAD_UP);
         setupRepeat(mainKeyboardView.findViewById(R.id.btnDown), KeyEvent.KEYCODE_DPAD_DOWN);
 
-        // --- LAYER 2: HURUF & LONG PRESS ---
+        // --- LAYER 2: HURUF & LONG PRESS (Menggunakan FrameLayout) ---
         setupLongPress(mainKeyboardView.findViewById(R.id.btnQ), "q", "1");
         setupLongPress(mainKeyboardView.findViewById(R.id.btnW), "w", "2");
         setupLongPress(mainKeyboardView.findViewById(R.id.btnE), "e", "3");
@@ -112,7 +113,6 @@ public class MyKeyboardService extends InputMethodService {
         setupTextBtn(mainKeyboardView, R.id.btnB, "b"); setupTextBtn(mainKeyboardView, R.id.btnN, "n");
         setupTextBtn(mainKeyboardView, R.id.btnM, "m");
         
-        // SPASI DENGAN FITUR TEKAN LAMA UNTUK PENGATURAN
         setupSpaceSettings(mainKeyboardView.findViewById(R.id.btnSpasi));
 
         setupTextBtn(mainKeyboardView, R.id.btnKoma, ","); setupTextBtn(mainKeyboardView, R.id.btnTitik, ".");
@@ -187,13 +187,11 @@ public class MyKeyboardService extends InputMethodService {
         });
     }
 
-    // --- FUNGSI POPUP WINDOW (ANTI CRASH) ---
     private void showSettingsPopup() {
         if (settingsPopup != null && settingsPopup.isShowing()) return;
 
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
         
-        // Focusable = true agar slider bisa digeser
         settingsPopup = new PopupWindow(
                 popupView, 
                 ViewGroup.LayoutParams.WRAP_CONTENT, 
@@ -201,7 +199,7 @@ public class MyKeyboardService extends InputMethodService {
                 true); 
 
         settingsPopup.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        settingsPopup.setOutsideTouchable(false); // Wajib pencet tombol TUTUP untuk keluar
+        settingsPopup.setOutsideTouchable(false);
 
         SharedPreferences prefs = getSharedPreferences("DeepBoardPrefs", MODE_PRIVATE);
         
@@ -248,27 +246,42 @@ public class MyKeyboardService extends InputMethodService {
             }
         });
 
-        // Tampilkan di tengah layar
         settingsPopup.showAtLocation(mainKeyboardView, Gravity.CENTER, 0, 0);
     }
 
+    // --- FUNGSI APPLY SIZE YANG SUDAH DIPERBARUI ---
     private void applyCustomSize(View view, int heightDp, int fontSp) {
         float density = getResources().getDisplayMetrics().density;
         int heightPx = (int) (heightDp * density);
-        
+
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) {
                 applyCustomSize(group.getChildAt(i), heightDp, fontSp);
             }
-        } else if (view instanceof Button) {
-            Button btn = (Button) view;
-            ViewGroup.LayoutParams params = btn.getLayoutParams();
+        }
+
+        // Jika itu Button atau FrameLayout (Tombol dengan 2 teks)
+        if (view instanceof Button || view instanceof FrameLayout) {
+            ViewGroup.LayoutParams params = view.getLayoutParams();
             if (params != null) {
                 params.height = heightPx;
-                btn.setLayoutParams(params);
+                view.setLayoutParams(params);
             }
-            btn.setTextSize(fontSp);
+        }
+
+        // Mengatur ukuran teks
+        if (view instanceof TextView) {
+            TextView tv = (TextView) view;
+            if ("main_text".equals(tv.getTag())) {
+                tv.setTextSize(fontSp);
+            } else if ("sub_text".equals(tv.getTag())) {
+                // Angka kecil dibuat sedikit lebih kecil dari huruf utama
+                tv.setTextSize(Math.max(8, fontSp - 6)); 
+            } else if (view instanceof Button) {
+                // Tombol biasa (Shortcut, Angka, dll)
+                tv.setTextSize(Math.max(10, fontSp - 4)); 
+            }
         }
     }
 
@@ -327,7 +340,7 @@ public class MyKeyboardService extends InputMethodService {
                         v.setPressed(true);
                         timeDown = System.currentTimeMillis();
                         isLongPressed = false;
-                        handler.postDelayed(runnable, 350); // Tahan 350ms
+                        handler.postDelayed(runnable, 350); 
                         return true;
                     case MotionEvent.ACTION_UP:
                         handler.removeCallbacks(runnable);
