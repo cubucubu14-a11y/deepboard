@@ -6,45 +6,6 @@
     android:background="#1E1F22"
     android:padding="4dp">
 
-    <!-- TOOLBAR ATAS -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_marginBottom="4dp">
-
-        <Button
-            android:id="@+id/btnToolbarShortcut"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="⚡"
-            android:textSize="16sp"
-            android:background="@drawable/bg_btn_grey"
-            android:textColor="#AAAAAA"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
-
-        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-
-        <Button
-            android:id="@+id/btnHideKeyboard"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="⌄"
-            android:textSize="18sp"
-            android:background="@drawable/bg_btn_grey"
-            android:textColor="#AAAAAA"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
-    </LinearLayout>
-
     <!-- LAYER 1: SHORTCUT -->
     <LinearLayout
         android:id="@+id/layerShortcut"
@@ -77,7 +38,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- LAYER 2: HURUF (GBOARD STYLE) -->
+    <!-- LAYER 2: HURUF -->
     <LinearLayout
         android:id="@+id/layerAlpha"
         android:layout_width="match_parent"
@@ -179,12 +140,15 @@
             <Button android:id="@+id/btnDelLetter" android:text="⌫" android:textSize="18sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="46dp" android:layout_margin="2dp"/>
         </LinearLayout>
 
+        <!-- Baris Bawah: Ikon Petir Pindah ke Sini -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/btnToSymbol" android:text="/?123" android:textSize="12sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
+            <Button android:id="@+id/btnToSymbol" android:text="\?123" android:textSize="12sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnKoma" android:text="," android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnSpasi" android:text="SPASI" android:textSize="12sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="4" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnTitik" android:text="." android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnEnterAlpha" android:text="↵" android:textSize="18sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="46dp" android:layout_margin="2dp"/>
+            <!-- Ikon Petir -->
+            <Button android:id="@+id/btnToolbarShortcut" android:text="⚡" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
+            <Button android:id="@+id/btnEnterAlpha" android:text="↵" android:textSize="18sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
         </LinearLayout>
     </LinearLayout>
 
