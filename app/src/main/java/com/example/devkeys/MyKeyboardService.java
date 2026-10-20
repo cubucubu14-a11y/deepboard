@@ -3,14 +3,17 @@ package com.example.devkeys;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.inputmethodservice.InputMethodService;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,7 +31,6 @@ public class MyKeyboardService extends InputMethodService {
     public View onCreateInputView() {
         mainKeyboardView = getLayoutInflater().inflate(R.layout.keyboard_view, null);
 
-        // --- BACA PENGATURAN UKURAN ---
         SharedPreferences prefs = getSharedPreferences("DeepBoardPrefs", MODE_PRIVATE);
         int savedHeight = prefs.getInt("key_height", 46);
         int savedFont = prefs.getInt("key_font", 16);
@@ -168,13 +170,13 @@ public class MyKeyboardService extends InputMethodService {
                         v.setPressed(true);
                         timeDown = System.currentTimeMillis();
                         isLongPressed = false;
-                        handler.postDelayed(runnable, 500); // Tahan 500ms untuk munculkan menu
+                        handler.postDelayed(runnable, 500); // Tahan 500ms
                         return true;
                     case MotionEvent.ACTION_UP:
                         handler.removeCallbacks(runnable);
                         v.setPressed(false);
                         if (!isLongPressed && (System.currentTimeMillis() - timeDown) < 500) {
-                            sendText(" "); // Ketik spasi normal
+                            sendText(" "); 
                         }
                         return true;
                     case MotionEvent.ACTION_CANCEL:
@@ -193,6 +195,21 @@ public class MyKeyboardService extends InputMethodService {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
         dialog.setContentView(dialogView);
 
+        // --- INI KUNCI PERBAIKANNYA (ANTI CRASH) ---
+        Window window = dialog.getWindow();
+        if (window != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                window.setType(WindowManager.LayoutParams.TYPE_PHONE);
+            }
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.gravity = Gravity.CENTER;
+            window.setAttributes(params);
+        }
+        // -------------------------------------------
+
         SharedPreferences prefs = getSharedPreferences("DeepBoardPrefs", MODE_PRIVATE);
         
         TextView tvHeightLabel = dialogView.findViewById(R.id.tvHeightLabel);
@@ -200,7 +217,6 @@ public class MyKeyboardService extends InputMethodService {
         TextView tvFontLabel = dialogView.findViewById(R.id.tvFontLabel);
         SeekBar seekFont = dialogView.findViewById(R.id.seekFont);
 
-        // Setup Tinggi
         int currentHeight = prefs.getInt("key_height", 46);
         tvHeightLabel.setText("Tinggi Tombol: " + currentHeight + "dp");
         seekHeight.setMax(30);
@@ -210,13 +226,12 @@ public class MyKeyboardService extends InputMethodService {
                 int val = progress + 30;
                 tvHeightLabel.setText("Tinggi Tombol: " + val + "dp");
                 prefs.edit().putInt("key_height", val).apply();
-                applyCustomSize(mainKeyboardView, val, prefs.getInt("key_font", 16)); // Update Real-time
+                if(mainKeyboardView != null) applyCustomSize(mainKeyboardView, val, prefs.getInt("key_font", 16));
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // Setup Font
         int currentFont = prefs.getInt("key_font", 16);
         tvFontLabel.setText("Ukuran Huruf: " + currentFont + "sp");
         seekFont.setMax(12);
@@ -226,7 +241,7 @@ public class MyKeyboardService extends InputMethodService {
                 int val = progress + 12;
                 tvFontLabel.setText("Ukuran Huruf: " + val + "sp");
                 prefs.edit().putInt("key_font", val).apply();
-                applyCustomSize(mainKeyboardView, prefs.getInt("key_height", 46), val); // Update Real-time
+                if(mainKeyboardView != null) applyCustomSize(mainKeyboardView, prefs.getInt("key_height", 46), val);
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -235,7 +250,6 @@ public class MyKeyboardService extends InputMethodService {
         dialog.show();
     }
 
-    // --- FUNGSI UNTUK MENGUBAH UKURAN SECARA OTOMATIS ---
     private void applyCustomSize(View view, int heightDp, int fontSp) {
         float density = getResources().getDisplayMetrics().density;
         int heightPx = (int) (heightDp * density);
