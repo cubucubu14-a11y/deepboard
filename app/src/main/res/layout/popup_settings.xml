@@ -43,6 +43,16 @@
         android:id="@+id/seekFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:progressTint="#007BFF"/>
+
+    <!-- TOMBOL TUTUP YANG HILANG TADI -->
+    <Button
+        android:id="@+id/btnClosePopup"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="TUTUP"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#B71C1C"/>
 
 </LinearLayout>
