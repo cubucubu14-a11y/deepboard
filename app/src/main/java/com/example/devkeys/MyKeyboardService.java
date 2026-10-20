@@ -1,9 +1,8 @@
 package com.example.devkeys;
 
-import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.inputmethodservice.InputMethodService;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
@@ -12,11 +11,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -26,6 +24,7 @@ public class MyKeyboardService extends InputMethodService {
     private Runnable repeatRunnable;
     private LinearLayout layerShortcut, layerAlpha, layerSymbol;
     private View mainKeyboardView;
+    private PopupWindow settingsPopup;
 
     @Override
     public View onCreateInputView() {
@@ -149,7 +148,6 @@ public class MyKeyboardService extends InputMethodService {
         return mainKeyboardView;
     }
 
-    // --- FUNGSI POPUP PENGATURAN SAAT SPASI DITEKAN LAMA ---
     private void setupSpaceSettings(View spasiBtn) {
         if (spasiBtn == null) return;
 
@@ -159,7 +157,7 @@ public class MyKeyboardService extends InputMethodService {
             private final Handler handler = new Handler(Looper.getMainLooper());
             private final Runnable runnable = () -> {
                 isLongPressed = true;
-                showSettingsDialog();
+                showSettingsPopup();
                 spasiBtn.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
             };
 
@@ -189,33 +187,29 @@ public class MyKeyboardService extends InputMethodService {
         });
     }
 
-    private void showSettingsDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
-        dialog.setContentView(dialogView);
+    // --- FUNGSI POPUP WINDOW (ANTI CRASH) ---
+    private void showSettingsPopup() {
+        if (settingsPopup != null && settingsPopup.isShowing()) return;
 
-        // --- INI KUNCI PERBAIKANNYA (ANTI CRASH) ---
-        Window window = dialog.getWindow();
-        if (window != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            } else {
-                window.setType(WindowManager.LayoutParams.TYPE_PHONE);
-            }
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.gravity = Gravity.CENTER;
-            window.setAttributes(params);
-        }
-        // -------------------------------------------
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
+        
+        // Focusable = true agar slider bisa digeser
+        settingsPopup = new PopupWindow(
+                popupView, 
+                ViewGroup.LayoutParams.WRAP_CONTENT, 
+                ViewGroup.LayoutParams.WRAP_CONTENT, 
+                true); 
+
+        settingsPopup.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        settingsPopup.setOutsideTouchable(false); // Wajib pencet tombol TUTUP untuk keluar
 
         SharedPreferences prefs = getSharedPreferences("DeepBoardPrefs", MODE_PRIVATE);
         
-        TextView tvHeightLabel = dialogView.findViewById(R.id.tvHeightLabel);
-        SeekBar seekHeight = dialogView.findViewById(R.id.seekHeight);
-        TextView tvFontLabel = dialogView.findViewById(R.id.tvFontLabel);
-        SeekBar seekFont = dialogView.findViewById(R.id.seekFont);
+        TextView tvHeightLabel = popupView.findViewById(R.id.tvHeightLabel);
+        SeekBar seekHeight = popupView.findViewById(R.id.seekHeight);
+        TextView tvFontLabel = popupView.findViewById(R.id.tvFontLabel);
+        SeekBar seekFont = popupView.findViewById(R.id.seekFont);
+        Button btnClose = popupView.findViewById(R.id.btnClosePopup);
 
         int currentHeight = prefs.getInt("key_height", 46);
         tvHeightLabel.setText("Tinggi Tombol: " + currentHeight + "dp");
@@ -247,7 +241,15 @@ public class MyKeyboardService extends InputMethodService {
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        dialog.show();
+        btnClose.setOnClickListener(v -> {
+            if (settingsPopup != null) {
+                settingsPopup.dismiss();
+                settingsPopup = null;
+            }
+        });
+
+        // Tampilkan di tengah layar
+        settingsPopup.showAtLocation(mainKeyboardView, Gravity.CENTER, 0, 0);
     }
 
     private void applyCustomSize(View view, int heightDp, int fontSp) {
