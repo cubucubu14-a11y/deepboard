@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         title.setPadding(0, 0, 0, 30);
 
         TextView desc = new TextView(this);
-        desc.setText("Cara pakai:\n\n1. Klik 'Buka Pengaturan'.\n2. Aktifkan DeepBoard.\n3. Klik 'Pilih Keyboard'.\n4. Pilih DeepBoard.\n\nFitur:\n- Tahan tombol huruf untuk simbol/angka.\n- Spasi di kiri.\n\nSelamat ngoding!");
+        desc.setText("Cara pakai:\n\n1. Klik 'Buka Pengaturan'.\n2. Aktifkan DeepBoard.\n3. Klik 'Pilih Keyboard'.\n4. Pilih DeepBoard.\n\nTips:\nTekan Lama (tahan) tombol SPASI di keyboard untuk mengubah ukuran.");
         desc.setTextColor(0xFFAAAAAA);
         desc.setTextSize(16);
         desc.setPadding(0, 0, 0, 60);
