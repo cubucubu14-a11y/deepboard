@@ -41,11 +41,9 @@ public class MyKeyboardService extends InputMethodService {
         layerShortcut = mainKeyboardView.findViewById(R.id.layerShortcut);
         layerAlpha = mainKeyboardView.findViewById(R.id.layerAlpha);
         layerSymbol = mainKeyboardView.findViewById(R.id.layerSymbol);
+        
+        // Tombol shortcut yang sekarang ada di baris bawah
         btnToolbarShortcut = mainKeyboardView.findViewById(R.id.btnToolbarShortcut);
-
-        // --- TOOLBAR ATAS ---
-        btnToolbarShortcut.setOnClickListener(v -> switchLayer("shortcut"));
-        mainKeyboardView.findViewById(R.id.btnHideKeyboard).setOnClickListener(v -> requestHideSelf(0));
 
         // --- PINDAH LAYER ---
         View btnToAlpha1 = mainKeyboardView.findViewById(R.id.btnToAlpha);
@@ -56,6 +54,10 @@ public class MyKeyboardService extends InputMethodService {
 
         View btnToSymbol = mainKeyboardView.findViewById(R.id.btnToSymbol);
         if (btnToSymbol != null) btnToSymbol.setOnClickListener(v -> switchLayer("symbol"));
+
+        if (btnToolbarShortcut != null) {
+            btnToolbarShortcut.setOnClickListener(v -> switchLayer("shortcut"));
+        }
 
         // --- LAYER 1: SHORTCUT ---
         setupCtrlBtn(mainKeyboardView, R.id.btnSelAll, KeyEvent.KEYCODE_A);
@@ -150,16 +152,25 @@ public class MyKeyboardService extends InputMethodService {
         setupTextBtn(mainKeyboardView, R.id.btnMinus, "-"); setupTextBtn(mainKeyboardView, R.id.btnPlus, "+");
         setupTextBtn(mainKeyboardView, R.id.btnBukaKurung, "("); setupTextBtn(mainKeyboardView, R.id.btnTutupKurung, ")");
         
-        setupTextBtn(mainKeyboardView, R.id.btnBukaKurawal, "{"); setupTextBtn(mainKeyboardView, R.id.btnTutupKurawal, "}");
-        setupTextBtn(mainKeyboardView, R.id.btnBukaSiku, "["); setupTextBtn(mainKeyboardView, R.id.btnTutupSiku, "]");
-        setupTextBtn(mainKeyboardView, R.id.btnKurang, "<"); setupTextBtn(mainKeyboardView, R.id.btnLebih, ">");
-        setupTextBtn(mainKeyboardView, R.id.btnSamaDengan, "="); setupTextBtn(mainKeyboardView, R.id.btnSlash, "/");
-        setupTextBtn(mainKeyboardView, R.id.btnTanya, "?"); setupTextBtn(mainKeyboardView, R.id.btnSeru, "!");
+        setupTextBtn(mainKeyboardView, R.id.btnBukaKurawal, "{");
+        setupTextBtn(mainKeyboardView, R.id.btnTutupKurawal, "}");
+        setupTextBtn(mainKeyboardView, R.id.btnBukaSiku, "[");
+        setupTextBtn(mainKeyboardView, R.id.btnTutupSiku, "]");
+        setupTextBtn(mainKeyboardView, R.id.btnKurang, "<");
+        setupTextBtn(mainKeyboardView, R.id.btnLebih, ">");
+        setupTextBtn(mainKeyboardView, R.id.btnSamaDengan, "=");
+        setupTextBtn(mainKeyboardView, R.id.btnSlash, "/");
+        setupTextBtn(mainKeyboardView, R.id.btnTanya, "?");
+        setupTextBtn(mainKeyboardView, R.id.btnSeru, "!");
         
-        setupTextBtn(mainKeyboardView, R.id.btnStrip, "_"); setupTextBtn(mainKeyboardView, R.id.btnPetik2, "\"");
-        setupTextBtn(mainKeyboardView, R.id.btnPetik1, "'"); setupTextBtn(mainKeyboardView, R.id.btnTitikKoma, ";");
-        setupTextBtn(mainKeyboardView, R.id.btnTitikDua, ":"); setupTextBtn(mainKeyboardView, R.id.btnSpasiSymbol, " ");
-        setupTextBtn(mainKeyboardView, R.id.btnPipe, "|"); setupTextBtn(mainKeyboardView, R.id.btnTilde, "~");
+        setupTextBtn(mainKeyboardView, R.id.btnStrip, "_");
+        setupTextBtn(mainKeyboardView, R.id.btnPetik2, "\"");
+        setupTextBtn(mainKeyboardView, R.id.btnPetik1, "'");
+        setupTextBtn(mainKeyboardView, R.id.btnTitikKoma, ";");
+        setupTextBtn(mainKeyboardView, R.id.btnTitikDua, ":");
+        setupTextBtn(mainKeyboardView, R.id.btnSpasiSymbol, " ");
+        setupTextBtn(mainKeyboardView, R.id.btnPipe, "|");
+        setupTextBtn(mainKeyboardView, R.id.btnTilde, "~");
         setupTextBtn(mainKeyboardView, R.id.btnBacktick, "`");
 
         // Tampilkan Mode Shortcut saat pertama dibuka
@@ -304,7 +315,6 @@ public class MyKeyboardService extends InputMethodService {
 
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
-            // Atur margin untuk jarak antar tombol
             ViewGroup.LayoutParams params = group.getLayoutParams();
             if (params instanceof ViewGroup.MarginLayoutParams) {
                 ((ViewGroup.MarginLayoutParams) params).setMargins(gapPx, gapPx, gapPx, gapPx);
@@ -335,7 +345,6 @@ public class MyKeyboardService extends InputMethodService {
         }
     }
 
-    // Helper Functions
     private void setupTextBtn(View view, int id, String text) {
         View v = view.findViewById(id);
         if (v != null && text != null) v.setOnClickListener(click -> sendText(text));
