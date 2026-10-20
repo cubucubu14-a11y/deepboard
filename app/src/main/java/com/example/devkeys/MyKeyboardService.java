@@ -1,92 +1,75 @@
 package com.example.devkeys;
 
+import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.inputmethodservice.InputMethodService;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class MyKeyboardService extends InputMethodService {
     private boolean isSelectMode = false;
     private Handler repeatHandler = new Handler(Looper.getMainLooper());
     private Runnable repeatRunnable;
     private LinearLayout layerShortcut, layerAlpha, layerSymbol;
+    private View mainKeyboardView;
 
     @Override
     public View onCreateInputView() {
-        View view = getLayoutInflater().inflate(R.layout.keyboard_view, null);
+        mainKeyboardView = getLayoutInflater().inflate(R.layout.keyboard_view, null);
 
-        layerShortcut = view.findViewById(R.id.layerShortcut);
-        layerAlpha = view.findViewById(R.id.layerAlpha);
-        layerSymbol = view.findViewById(R.id.layerSymbol);
+        // --- BACA PENGATURAN UKURAN ---
+        SharedPreferences prefs = getSharedPreferences("DeepBoardPrefs", MODE_PRIVATE);
+        int savedHeight = prefs.getInt("key_height", 46);
+        int savedFont = prefs.getInt("key_font", 16);
+        applyCustomSize(mainKeyboardView, savedHeight, savedFont);
+
+        layerShortcut = mainKeyboardView.findViewById(R.id.layerShortcut);
+        layerAlpha = mainKeyboardView.findViewById(R.id.layerAlpha);
+        layerSymbol = mainKeyboardView.findViewById(R.id.layerSymbol);
 
         // --- LOGIKA PINDAH LAYER ---
-        View btnToAlpha1 = view.findViewById(R.id.btnToAlpha);
-        if (btnToAlpha1 != null) {
-            btnToAlpha1.setOnClickListener(v -> {
-                layerShortcut.setVisibility(View.GONE);
-                layerSymbol.setVisibility(View.GONE);
-                layerAlpha.setVisibility(View.VISIBLE);
-            });
-        }
+        View btnToAlpha1 = mainKeyboardView.findViewById(R.id.btnToAlpha);
+        if (btnToAlpha1 != null) btnToAlpha1.setOnClickListener(v -> switchLayer("alpha"));
 
-        View btnToAlpha2 = view.findViewById(R.id.btnToAlphaFromSymbol);
-        if (btnToAlpha2 != null) {
-            btnToAlpha2.setOnClickListener(v -> {
-                layerShortcut.setVisibility(View.GONE);
-                layerSymbol.setVisibility(View.GONE);
-                layerAlpha.setVisibility(View.VISIBLE);
-            });
-        }
+        View btnToAlpha2 = mainKeyboardView.findViewById(R.id.btnToAlphaFromSymbol);
+        if (btnToAlpha2 != null) btnToAlpha2.setOnClickListener(v -> switchLayer("alpha"));
 
-        View btnToSymbol = view.findViewById(R.id.btnToSymbol);
-        if (btnToSymbol != null) {
-            btnToSymbol.setOnClickListener(v -> {
-                layerShortcut.setVisibility(View.GONE);
-                layerAlpha.setVisibility(View.GONE);
-                layerSymbol.setVisibility(View.VISIBLE);
-            });
-        }
+        View btnToSymbol = mainKeyboardView.findViewById(R.id.btnToSymbol);
+        if (btnToSymbol != null) btnToSymbol.setOnClickListener(v -> switchLayer("symbol"));
 
-        View btnToShortcut = view.findViewById(R.id.btnToShortcut);
-        if (btnToShortcut != null) {
-            btnToShortcut.setOnClickListener(v -> {
-                layerAlpha.setVisibility(View.GONE);
-                layerSymbol.setVisibility(View.GONE);
-                layerShortcut.setVisibility(View.VISIBLE);
-            });
-        }
+        View btnToShortcut = mainKeyboardView.findViewById(R.id.btnToShortcut);
+        if (btnToShortcut != null) btnToShortcut.setOnClickListener(v -> switchLayer("shortcut"));
 
-        View btnToShortcutSymbol = view.findViewById(R.id.btnToShortcutSymbol);
-        if (btnToShortcutSymbol != null) {
-            btnToShortcutSymbol.setOnClickListener(v -> {
-                layerAlpha.setVisibility(View.GONE);
-                layerSymbol.setVisibility(View.GONE);
-                layerShortcut.setVisibility(View.VISIBLE);
-            });
-        }
+        View btnToShortcutSymbol = mainKeyboardView.findViewById(R.id.btnToShortcutSymbol);
+        if (btnToShortcutSymbol != null) btnToShortcutSymbol.setOnClickListener(v -> switchLayer("shortcut"));
 
         // --- LAYER 1: SHORTCUT ---
-        setupTextBtn(view, R.id.btnSelAll, null);
-        setupCtrlBtn(view, R.id.btnSelAll, KeyEvent.KEYCODE_A);
-        setupCtrlBtn(view, R.id.btnCopy, KeyEvent.KEYCODE_C);
-        setupCtrlBtn(view, R.id.btnPaste, KeyEvent.KEYCODE_V);
-        setupCtrlBtn(view, R.id.btnFind, KeyEvent.KEYCODE_F);
-        setupCtrlBtn(view, R.id.btnUndo, KeyEvent.KEYCODE_Z);
-        setupCtrlBtn(view, R.id.btnRedo, KeyEvent.KEYCODE_Y);
-        setupKeyBtn(view, R.id.btnTab, KeyEvent.KEYCODE_TAB);
-        setupKeyBtn(view, R.id.btnEnter, KeyEvent.KEYCODE_ENTER);
+        setupCtrlBtn(mainKeyboardView, R.id.btnSelAll, KeyEvent.KEYCODE_A);
+        setupCtrlBtn(mainKeyboardView, R.id.btnCopy, KeyEvent.KEYCODE_C);
+        setupCtrlBtn(mainKeyboardView, R.id.btnPaste, KeyEvent.KEYCODE_V);
+        setupCtrlBtn(mainKeyboardView, R.id.btnFind, KeyEvent.KEYCODE_F);
+        setupCtrlBtn(mainKeyboardView, R.id.btnUndo, KeyEvent.KEYCODE_Z);
+        setupCtrlBtn(mainKeyboardView, R.id.btnRedo, KeyEvent.KEYCODE_Y);
+        setupKeyBtn(mainKeyboardView, R.id.btnTab, KeyEvent.KEYCODE_TAB);
+        setupKeyBtn(mainKeyboardView, R.id.btnEnter, KeyEvent.KEYCODE_ENTER);
 
-        Button btnSelect = view.findViewById(R.id.btnSelect);
+        Button btnSelect = mainKeyboardView.findViewById(R.id.btnSelect);
         if (btnSelect != null) {
             btnSelect.setOnClickListener(v -> {
                 isSelectMode = !isSelectMode;
                 if (isSelectMode) {
-                    btnSelect.setBackgroundResource(R.drawable.bg_btn_blue); 
+                    btnSelect.setBackgroundResource(R.drawable.bg_btn_blue);
                     btnSelect.setTextColor(0xFFFFFFFF);
                 } else {
                     btnSelect.setBackgroundResource(R.drawable.bg_btn_grey);
@@ -95,69 +78,196 @@ public class MyKeyboardService extends InputMethodService {
             });
         }
 
-        setupRepeat(view.findViewById(R.id.btnDel), KeyEvent.KEYCODE_DEL);
-        setupRepeat(view.findViewById(R.id.btnLeft), KeyEvent.KEYCODE_DPAD_LEFT);
-        setupRepeat(view.findViewById(R.id.btnRight), KeyEvent.KEYCODE_DPAD_RIGHT);
-        setupRepeat(view.findViewById(R.id.btnUp), KeyEvent.KEYCODE_DPAD_UP);
-        setupRepeat(view.findViewById(R.id.btnDown), KeyEvent.KEYCODE_DPAD_DOWN);
+        setupRepeat(mainKeyboardView.findViewById(R.id.btnDel), KeyEvent.KEYCODE_DEL);
+        setupRepeat(mainKeyboardView.findViewById(R.id.btnLeft), KeyEvent.KEYCODE_DPAD_LEFT);
+        setupRepeat(mainKeyboardView.findViewById(R.id.btnRight), KeyEvent.KEYCODE_DPAD_RIGHT);
+        setupRepeat(mainKeyboardView.findViewById(R.id.btnUp), KeyEvent.KEYCODE_DPAD_UP);
+        setupRepeat(mainKeyboardView.findViewById(R.id.btnDown), KeyEvent.KEYCODE_DPAD_DOWN);
 
         // --- LAYER 2: HURUF & LONG PRESS ---
-        setupLongPress(view.findViewById(R.id.btnQ), "q", "1");
-        setupLongPress(view.findViewById(R.id.btnW), "w", "2");
-        setupLongPress(view.findViewById(R.id.btnE), "e", "3");
-        setupLongPress(view.findViewById(R.id.btnR), "r", "4");
-        setupLongPress(view.findViewById(R.id.btnT), "t", "5");
-        setupLongPress(view.findViewById(R.id.btnY), "y", "6");
-        setupLongPress(view.findViewById(R.id.btnU), "u", "7");
-        setupLongPress(view.findViewById(R.id.btnI), "i", "8");
-        setupLongPress(view.findViewById(R.id.btnO), "o", "9");
-        setupLongPress(view.findViewById(R.id.btnP), "p", "0");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnQ), "q", "1");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnW), "w", "2");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnE), "e", "3");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnR), "r", "4");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnT), "t", "5");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnY), "y", "6");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnU), "u", "7");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnI), "i", "8");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnO), "o", "9");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnP), "p", "0");
 
-        setupLongPress(view.findViewById(R.id.btnA), "a", "@");
-        setupLongPress(view.findViewById(R.id.btnS), "s", "#");
-        setupLongPress(view.findViewById(R.id.btnD), "d", "$");
-        setupLongPress(view.findViewById(R.id.btnF), "f", "%");
-        setupLongPress(view.findViewById(R.id.btnG), "g", "&");
-        setupLongPress(view.findViewById(R.id.btnH), "h", "-");
-        setupLongPress(view.findViewById(R.id.btnJ), "j", "+");
-        setupLongPress(view.findViewById(R.id.btnK), "k", "*");
-        setupLongPress(view.findViewById(R.id.btnL), "l", "/");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnA), "a", "@");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnS), "s", "#");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnD), "d", "$");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnF), "f", "%");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnG), "g", "&");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnH), "h", "-");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnJ), "j", "+");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnK), "k", "*");
+        setupLongPress(mainKeyboardView.findViewById(R.id.btnL), "l", "/");
 
-        setupTextBtn(view, R.id.btnZ, "z"); setupTextBtn(view, R.id.btnX, "x");
-        setupTextBtn(view, R.id.btnC, "c"); setupTextBtn(view, R.id.btnV, "v");
-        setupTextBtn(view, R.id.btnB, "b"); setupTextBtn(view, R.id.btnN, "n");
-        setupTextBtn(view, R.id.btnM, "m"); setupTextBtn(view, R.id.btnSpasi, " ");
-        setupTextBtn(view, R.id.btnKoma, ","); setupTextBtn(view, R.id.btnTitik, ".");
-        setupKeyBtn(view, R.id.btnDelLetter, KeyEvent.KEYCODE_DEL);
+        setupTextBtn(mainKeyboardView, R.id.btnZ, "z"); setupTextBtn(mainKeyboardView, R.id.btnX, "x");
+        setupTextBtn(mainKeyboardView, R.id.btnC, "c"); setupTextBtn(mainKeyboardView, R.id.btnV, "v");
+        setupTextBtn(mainKeyboardView, R.id.btnB, "b"); setupTextBtn(mainKeyboardView, R.id.btnN, "n");
+        setupTextBtn(mainKeyboardView, R.id.btnM, "m");
+        
+        // SPASI DENGAN FITUR TEKAN LAMA UNTUK PENGATURAN
+        setupSpaceSettings(mainKeyboardView.findViewById(R.id.btnSpasi));
+
+        setupTextBtn(mainKeyboardView, R.id.btnKoma, ","); setupTextBtn(mainKeyboardView, R.id.btnTitik, ".");
+        setupKeyBtn(mainKeyboardView, R.id.btnDelLetter, KeyEvent.KEYCODE_DEL);
 
         // --- LAYER 3: SIMBOL ---
         int[] numIds = {R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9};
         String[] numVals = {"0","1","2","3","4","5","6","7","8","9"};
         for (int i = 0; i < numIds.length; i++) {
             final String val = numVals[i];
-            View b = view.findViewById(numIds[i]);
+            View b = mainKeyboardView.findViewById(numIds[i]);
             if (b != null) b.setOnClickListener(v -> sendText(val));
         }
         
-        setupTextBtn(view, R.id.btnBukaKurawal, "{");
-        setupTextBtn(view, R.id.btnTutupKurawal, "}");
-        setupTextBtn(view, R.id.btnBukaKurung, "(");
-        setupTextBtn(view, R.id.btnTutupKurung, ")");
-        setupTextBtn(view, R.id.btnBukaSiku, "[");
-        setupTextBtn(view, R.id.btnTutupSiku, "]");
-        setupTextBtn(view, R.id.btnKurang, "<");
-        setupTextBtn(view, R.id.btnLebih, ">");
-        setupTextBtn(view, R.id.btnSamaDengan, "=");
-        setupTextBtn(view, R.id.btnTambah, "+");
+        setupTextBtn(mainKeyboardView, R.id.btnBukaKurawal, "{");
+        setupTextBtn(mainKeyboardView, R.id.btnTutupKurawal, "}");
+        setupTextBtn(mainKeyboardView, R.id.btnBukaKurung, "(");
+        setupTextBtn(mainKeyboardView, R.id.btnTutupKurung, ")");
+        setupTextBtn(mainKeyboardView, R.id.btnBukaSiku, "[");
+        setupTextBtn(mainKeyboardView, R.id.btnTutupSiku, "]");
+        setupTextBtn(mainKeyboardView, R.id.btnKurang, "<");
+        setupTextBtn(mainKeyboardView, R.id.btnLebih, ">");
+        setupTextBtn(mainKeyboardView, R.id.btnSamaDengan, "=");
+        setupTextBtn(mainKeyboardView, R.id.btnTambah, "+");
         
-        setupTextBtn(view, R.id.btnStrip, "_");
-        setupTextBtn(view, R.id.btnPetik2, "\"");
-        setupTextBtn(view, R.id.btnPetik1, "'");
-        setupTextBtn(view, R.id.btnTitikKoma, ";");
-        setupTextBtn(view, R.id.btnTitikDua, ":");
-        setupTextBtn(view, R.id.btnSpasiSymbol, " ");
+        setupTextBtn(mainKeyboardView, R.id.btnStrip, "_");
+        setupTextBtn(mainKeyboardView, R.id.btnPetik2, "\"");
+        setupTextBtn(mainKeyboardView, R.id.btnPetik1, "'");
+        setupTextBtn(mainKeyboardView, R.id.btnTitikKoma, ";");
+        setupTextBtn(mainKeyboardView, R.id.btnTitikDua, ":");
+        setupTextBtn(mainKeyboardView, R.id.btnSpasiSymbol, " ");
 
-        return view;
+        return mainKeyboardView;
+    }
+
+    // --- FUNGSI POPUP PENGATURAN SAAT SPASI DITEKAN LAMA ---
+    private void setupSpaceSettings(View spasiBtn) {
+        if (spasiBtn == null) return;
+
+        spasiBtn.setOnTouchListener(new View.OnTouchListener() {
+            private long timeDown;
+            private boolean isLongPressed = false;
+            private final Handler handler = new Handler(Looper.getMainLooper());
+            private final Runnable runnable = () -> {
+                isLongPressed = true;
+                showSettingsDialog();
+                spasiBtn.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            };
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.setPressed(true);
+                        timeDown = System.currentTimeMillis();
+                        isLongPressed = false;
+                        handler.postDelayed(runnable, 500); // Tahan 500ms untuk munculkan menu
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacks(runnable);
+                        v.setPressed(false);
+                        if (!isLongPressed && (System.currentTimeMillis() - timeDown) < 500) {
+                            sendText(" "); // Ketik spasi normal
+                        }
+                        return true;
+                    case MotionEvent.ACTION_CANCEL:
+                        handler.removeCallbacks(runnable);
+                        v.setPressed(false);
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void showSettingsDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
+        dialog.setContentView(dialogView);
+
+        SharedPreferences prefs = getSharedPreferences("DeepBoardPrefs", MODE_PRIVATE);
+        
+        TextView tvHeightLabel = dialogView.findViewById(R.id.tvHeightLabel);
+        SeekBar seekHeight = dialogView.findViewById(R.id.seekHeight);
+        TextView tvFontLabel = dialogView.findViewById(R.id.tvFontLabel);
+        SeekBar seekFont = dialogView.findViewById(R.id.seekFont);
+
+        // Setup Tinggi
+        int currentHeight = prefs.getInt("key_height", 46);
+        tvHeightLabel.setText("Tinggi Tombol: " + currentHeight + "dp");
+        seekHeight.setMax(30);
+        seekHeight.setProgress(currentHeight - 30);
+        seekHeight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int val = progress + 30;
+                tvHeightLabel.setText("Tinggi Tombol: " + val + "dp");
+                prefs.edit().putInt("key_height", val).apply();
+                applyCustomSize(mainKeyboardView, val, prefs.getInt("key_font", 16)); // Update Real-time
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // Setup Font
+        int currentFont = prefs.getInt("key_font", 16);
+        tvFontLabel.setText("Ukuran Huruf: " + currentFont + "sp");
+        seekFont.setMax(12);
+        seekFont.setProgress(currentFont - 12);
+        seekFont.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int val = progress + 12;
+                tvFontLabel.setText("Ukuran Huruf: " + val + "sp");
+                prefs.edit().putInt("key_font", val).apply();
+                applyCustomSize(mainKeyboardView, prefs.getInt("key_height", 46), val); // Update Real-time
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        dialog.show();
+    }
+
+    // --- FUNGSI UNTUK MENGUBAH UKURAN SECARA OTOMATIS ---
+    private void applyCustomSize(View view, int heightDp, int fontSp) {
+        float density = getResources().getDisplayMetrics().density;
+        int heightPx = (int) (heightDp * density);
+        
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                applyCustomSize(group.getChildAt(i), heightDp, fontSp);
+            }
+        } else if (view instanceof Button) {
+            Button btn = (Button) view;
+            ViewGroup.LayoutParams params = btn.getLayoutParams();
+            if (params != null) {
+                params.height = heightPx;
+                btn.setLayoutParams(params);
+            }
+            btn.setTextSize(fontSp);
+        }
+    }
+
+    private void switchLayer(String target) {
+        layerShortcut.setVisibility(View.GONE);
+        layerAlpha.setVisibility(View.GONE);
+        layerSymbol.setVisibility(View.GONE);
+
+        if (target.equals("alpha")) {
+            layerAlpha.setVisibility(View.VISIBLE);
+        } else if (target.equals("symbol")) {
+            layerSymbol.setVisibility(View.VISIBLE);
+        } else {
+            layerShortcut.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupTextBtn(View view, int id, String text) {
@@ -185,29 +295,35 @@ public class MyKeyboardService extends InputMethodService {
         if (button == null) return;
 
         button.setOnTouchListener(new View.OnTouchListener() {
-            private Handler handler = new Handler(Looper.getMainLooper());
-            private Runnable runnable;
+            private long timeDown;
             private boolean isLongPressed = false;
+            private final Handler handler = new Handler(Looper.getMainLooper());
+            private final Runnable runnable = () -> {
+                isLongPressed = true;
+                sendText(subChar);
+                button.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            };
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    isLongPressed = false;
-                    v.setPressed(true);
-                    runnable = () -> {
-                        isLongPressed = true;
-                        sendText(subChar); 
-                        v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
-                    };
-                    handler.postDelayed(runnable, 400);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    handler.removeCallbacks(runnable);
-                    v.setPressed(false);
-                    if (!isLongPressed) {
-                        sendText(mainChar);
-                    }
-                    return true;
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.setPressed(true);
+                        timeDown = System.currentTimeMillis();
+                        isLongPressed = false;
+                        handler.postDelayed(runnable, 350); // Tahan 350ms
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacks(runnable);
+                        v.setPressed(false);
+                        if (!isLongPressed && (System.currentTimeMillis() - timeDown) < 350) {
+                            sendText(mainChar);
+                        }
+                        return true;
+                    case MotionEvent.ACTION_CANCEL:
+                        handler.removeCallbacks(runnable);
+                        v.setPressed(false);
+                        return true;
                 }
                 return false;
             }
@@ -229,18 +345,13 @@ public class MyKeyboardService extends InputMethodService {
         }
     }
 
-    // --- LOGIKA UTAMA YANG DIRUBAH ---
     private void sendCtrlKey(int keyCode) {
         InputConnection ic = getCurrentInputConnection();
         if (ic != null) {
-            // JIKA MODE SELECT AKTIF DAN YANG DITEKAN ADALAH PANAH
             if (isSelectMode && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
                                  keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || 
                                  keyCode == KeyEvent.KEYCODE_DPAD_UP || 
                                  keyCode == KeyEvent.KEYCODE_DPAD_DOWN)) {
-                
-                // Trik: Kirim sinyal Shift Ditekan -> Panah Ditekan -> Panah Dilepas -> Shift Dilepas
-                // Ini lebih ampuh untuk aplikasi catatan standar (EditText)
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, keyCode));
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, keyCode));
@@ -248,7 +359,6 @@ public class MyKeyboardService extends InputMethodService {
                 return;
             }
 
-            // Logika Normal (Ctrl + Huruf untuk Copy/Paste/Select All)
             int metaState = KeyEvent.META_CTRL_ON;
             int ctrlKeyCode = KeyEvent.KEYCODE_CTRL_LEFT;
             ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, ctrlKeyCode, 0, metaState));
@@ -268,7 +378,6 @@ public class MyKeyboardService extends InputMethodService {
                     case MotionEvent.ACTION_DOWN:
                         v.setPressed(true);
                         
-                        // Panggil fungsi yang menangani Select Mode
                         if (isSelectMode && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
                                              keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || 
                                              keyCode == KeyEvent.KEYCODE_DPAD_UP || 
