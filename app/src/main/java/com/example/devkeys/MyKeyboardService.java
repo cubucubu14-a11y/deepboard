@@ -120,7 +120,7 @@ public class MyKeyboardService extends InputMethodService {
 
         setupTextBtn(mainKeyboardView, R.id.btnKoma, ",");
         setupTextBtn(mainKeyboardView, R.id.btnTitik, ".");
-        setupKeyBtn(mainKeyboardView, R.id.btnDelLetter, KeyEvent.KEYCODE_DEL);
+        setupRepeat(mainKeyboardView.findViewById(R.id.btnDelLetter), KeyEvent.KEYCODE_DEL);
         setupKeyBtn(mainKeyboardView, R.id.btnEnterAlpha, KeyEvent.KEYCODE_ENTER);
 
         Button btnShiftAlpha = mainKeyboardView.findViewById(R.id.btnShiftAlpha);
