@@ -180,7 +180,7 @@
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/btnToSymbol" android:text="?123" android:textSize="12sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
+            <Button android:id="@+id/btnToSymbol" android:text="/?123" android:textSize="12sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnKoma" android:text="," android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnSpasi" android:text="SPASI" android:textSize="12sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="4" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnTitik" android:text="." android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
