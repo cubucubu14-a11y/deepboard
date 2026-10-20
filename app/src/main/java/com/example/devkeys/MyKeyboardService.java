@@ -25,57 +25,75 @@ public class MyKeyboardService extends InputMethodService {
         layerSymbol = view.findViewById(R.id.layerSymbol);
 
         // --- LOGIKA PINDAH LAYER ---
-        view.findViewById(R.id.btnToAlpha).setOnClickListener(v -> {
-            layerShortcut.setVisibility(View.GONE);
-            layerSymbol.setVisibility(View.GONE);
-            layerAlpha.setVisibility(View.VISIBLE);
-        });
+        View btnToAlpha1 = view.findViewById(R.id.btnToAlpha);
+        if (btnToAlpha1 != null) {
+            btnToAlpha1.setOnClickListener(v -> {
+                layerShortcut.setVisibility(View.GONE);
+                layerSymbol.setVisibility(View.GONE);
+                layerAlpha.setVisibility(View.VISIBLE);
+            });
+        }
 
-        view.findViewById(R.id.btnToSymbol).setOnClickListener(v -> {
-            layerShortcut.setVisibility(View.GONE);
-            layerAlpha.setVisibility(View.GONE);
-            layerSymbol.setVisibility(View.VISIBLE);
-        });
+        View btnToAlpha2 = view.findViewById(R.id.btnToAlphaFromSymbol);
+        if (btnToAlpha2 != null) {
+            btnToAlpha2.setOnClickListener(v -> {
+                layerShortcut.setVisibility(View.GONE);
+                layerSymbol.setVisibility(View.GONE);
+                layerAlpha.setVisibility(View.VISIBLE);
+            });
+        }
 
-        view.findViewById(R.id.btnToShortcut).setOnClickListener(v -> {
-            layerAlpha.setVisibility(View.GONE);
-            layerSymbol.setVisibility(View.GONE);
-            layerShortcut.setVisibility(View.VISIBLE);
-        });
+        View btnToSymbol = view.findViewById(R.id.btnToSymbol);
+        if (btnToSymbol != null) {
+            btnToSymbol.setOnClickListener(v -> {
+                layerShortcut.setVisibility(View.GONE);
+                layerAlpha.setVisibility(View.GONE);
+                layerSymbol.setVisibility(View.VISIBLE);
+            });
+        }
 
-        view.findViewById(R.id.btnToShortcutSymbol).setOnClickListener(v -> {
-            layerAlpha.setVisibility(View.GONE);
-            layerSymbol.setVisibility(View.GONE);
-            layerShortcut.setVisibility(View.VISIBLE);
-        });
+        View btnToShortcut = view.findViewById(R.id.btnToShortcut);
+        if (btnToShortcut != null) {
+            btnToShortcut.setOnClickListener(v -> {
+                layerAlpha.setVisibility(View.GONE);
+                layerSymbol.setVisibility(View.GONE);
+                layerShortcut.setVisibility(View.VISIBLE);
+            });
+        }
 
-        view.findViewById(R.id.btnToAlpha).setOnClickListener(v -> {
-            layerShortcut.setVisibility(View.GONE);
-            layerSymbol.setVisibility(View.GONE);
-            layerAlpha.setVisibility(View.VISIBLE);
-        });
+        View btnToShortcutSymbol = view.findViewById(R.id.btnToShortcutSymbol);
+        if (btnToShortcutSymbol != null) {
+            btnToShortcutSymbol.setOnClickListener(v -> {
+                layerAlpha.setVisibility(View.GONE);
+                layerSymbol.setVisibility(View.GONE);
+                layerShortcut.setVisibility(View.VISIBLE);
+            });
+        }
 
         // --- LAYER 1: SHORTCUT ---
-        view.findViewById(R.id.btnSelAll).setOnClickListener(v -> sendCtrlKey(KeyEvent.KEYCODE_A));
-        view.findViewById(R.id.btnCopy).setOnClickListener(v -> sendCtrlKey(KeyEvent.KEYCODE_C));
-        view.findViewById(R.id.btnPaste).setOnClickListener(v -> sendCtrlKey(KeyEvent.KEYCODE_V));
-        view.findViewById(R.id.btnFind).setOnClickListener(v -> sendCtrlKey(KeyEvent.KEYCODE_F));
-        view.findViewById(R.id.btnUndo).setOnClickListener(v -> sendCtrlKey(KeyEvent.KEYCODE_Z));
-        view.findViewById(R.id.btnRedo).setOnClickListener(v -> sendCtrlKey(KeyEvent.KEYCODE_Y));
-        view.findViewById(R.id.btnTab).setOnClickListener(v -> sendKey(KeyEvent.KEYCODE_TAB));
-        view.findViewById(R.id.btnEnter).setOnClickListener(v -> sendKey(KeyEvent.KEYCODE_ENTER));
+        setupTextBtn(view, R.id.btnSelAll, null);
+        setupCtrlBtn(view, R.id.btnSelAll, KeyEvent.KEYCODE_A);
+        setupCtrlBtn(view, R.id.btnCopy, KeyEvent.KEYCODE_C);
+        setupCtrlBtn(view, R.id.btnPaste, KeyEvent.KEYCODE_V);
+        setupCtrlBtn(view, R.id.btnFind, KeyEvent.KEYCODE_F);
+        setupCtrlBtn(view, R.id.btnUndo, KeyEvent.KEYCODE_Z);
+        setupCtrlBtn(view, R.id.btnRedo, KeyEvent.KEYCODE_Y);
+        setupKeyBtn(view, R.id.btnTab, KeyEvent.KEYCODE_TAB);
+        setupKeyBtn(view, R.id.btnEnter, KeyEvent.KEYCODE_ENTER);
 
         Button btnSelect = view.findViewById(R.id.btnSelect);
-        btnSelect.setOnClickListener(v -> {
-            isSelectMode = !isSelectMode;
-            if (isSelectMode) {
-                btnSelect.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFF9800));
-                btnSelect.setTextColor(0xFFFFFFFF);
-            } else {
-                btnSelect.setBackgroundResource(R.drawable.bg_btn_primary);
-                btnSelect.setTextColor(0xFFAAAAAA);
-            }
-        });
+        if (btnSelect != null) {
+            btnSelect.setOnClickListener(v -> {
+                isSelectMode = !isSelectMode;
+                if (isSelectMode) {
+                    btnSelect.setBackgroundResource(R.drawable.bg_btn_blue); 
+                    btnSelect.setTextColor(0xFFFFFFFF);
+                } else {
+                    btnSelect.setBackgroundResource(R.drawable.bg_btn_grey);
+                    btnSelect.setTextColor(0xFFAAAAAA);
+                }
+            });
+        }
 
         setupRepeat(view.findViewById(R.id.btnDel), KeyEvent.KEYCODE_DEL);
         setupRepeat(view.findViewById(R.id.btnLeft), KeyEvent.KEYCODE_DPAD_LEFT);
@@ -110,14 +128,15 @@ public class MyKeyboardService extends InputMethodService {
         setupTextBtn(view, R.id.btnB, "b"); setupTextBtn(view, R.id.btnN, "n");
         setupTextBtn(view, R.id.btnM, "m"); setupTextBtn(view, R.id.btnSpasi, " ");
         setupTextBtn(view, R.id.btnKoma, ","); setupTextBtn(view, R.id.btnTitik, ".");
-        view.findViewById(R.id.btnDelLetter).setOnClickListener(v -> sendKey(KeyEvent.KEYCODE_DEL));
+        setupKeyBtn(view, R.id.btnDelLetter, KeyEvent.KEYCODE_DEL);
 
         // --- LAYER 3: SIMBOL ---
         int[] numIds = {R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9};
         String[] numVals = {"0","1","2","3","4","5","6","7","8","9"};
         for (int i = 0; i < numIds.length; i++) {
             final String val = numVals[i];
-            view.findViewById(numIds[i]).setOnClickListener(v -> sendText(val));
+            View b = view.findViewById(numIds[i]);
+            if (b != null) b.setOnClickListener(v -> sendText(val));
         }
         
         setupTextBtn(view, R.id.btnBukaKurawal, "{");
@@ -141,8 +160,30 @@ public class MyKeyboardService extends InputMethodService {
         return view;
     }
 
-    // --- FUNGSI LONG PRESS (TEKAN LAMA) ---
+    private void setupTextBtn(View view, int id, String text) {
+        View v = view.findViewById(id);
+        if (v != null && text != null) {
+            v.setOnClickListener(click -> sendText(text));
+        }
+    }
+
+    private void setupCtrlBtn(View view, int id, int keyCode) {
+        View v = view.findViewById(id);
+        if (v != null) {
+            v.setOnClickListener(click -> sendCtrlKey(keyCode));
+        }
+    }
+
+    private void setupKeyBtn(View view, int id, int keyCode) {
+        View v = view.findViewById(id);
+        if (v != null) {
+            v.setOnClickListener(click -> sendKey(keyCode));
+        }
+    }
+
     private void setupLongPress(View button, String mainChar, String subChar) {
+        if (button == null) return;
+
         button.setOnTouchListener(new View.OnTouchListener() {
             private Handler handler = new Handler(Looper.getMainLooper());
             private Runnable runnable;
@@ -153,10 +194,9 @@ public class MyKeyboardService extends InputMethodService {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     isLongPressed = false;
                     v.setPressed(true);
-                    // Timer 400ms untuk mendeteksi tekan lama
                     runnable = () -> {
                         isLongPressed = true;
-                        sendText(subChar); // Ketik simbol
+                        sendText(subChar); 
                         v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
                     };
                     handler.postDelayed(runnable, 400);
@@ -165,17 +205,13 @@ public class MyKeyboardService extends InputMethodService {
                     handler.removeCallbacks(runnable);
                     v.setPressed(false);
                     if (!isLongPressed) {
-                        sendText(mainChar); // Ketik huruf biasa jika tidak sampai 400ms
+                        sendText(mainChar);
                     }
                     return true;
                 }
                 return false;
             }
         });
-    }
-
-    private void setupTextBtn(View view, int id, String text) {
-        view.findViewById(id).setOnClickListener(v -> sendText(text));
     }
 
     private void sendText(String text) {
@@ -193,42 +229,66 @@ public class MyKeyboardService extends InputMethodService {
         }
     }
 
+    // --- LOGIKA UTAMA YANG DIRUBAH ---
     private void sendCtrlKey(int keyCode) {
         InputConnection ic = getCurrentInputConnection();
         if (ic != null) {
-            int metaState = isSelectMode ? KeyEvent.META_SHIFT_ON : KeyEvent.META_CTRL_ON;
-            int mainKeyCode = keyCode;
-
+            // JIKA MODE SELECT AKTIF DAN YANG DITEKAN ADALAH PANAH
             if (isSelectMode && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
                                  keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || 
                                  keyCode == KeyEvent.KEYCODE_DPAD_UP || 
                                  keyCode == KeyEvent.KEYCODE_DPAD_DOWN)) {
-                ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, mainKeyCode, 0, metaState));
-                ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_UP, mainKeyCode, 0, metaState));
+                
+                // Trik: Kirim sinyal Shift Ditekan -> Panah Ditekan -> Panah Dilepas -> Shift Dilepas
+                // Ini lebih ampuh untuk aplikasi catatan standar (EditText)
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, keyCode));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, keyCode));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT));
                 return;
             }
 
+            // Logika Normal (Ctrl + Huruf untuk Copy/Paste/Select All)
+            int metaState = KeyEvent.META_CTRL_ON;
             int ctrlKeyCode = KeyEvent.KEYCODE_CTRL_LEFT;
             ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, ctrlKeyCode, 0, metaState));
-            ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, mainKeyCode, 0, metaState));
-            ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_UP, mainKeyCode, 0, metaState));
+            ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, keyCode, 0, metaState));
+            ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_UP, keyCode, 0, metaState));
             ic.sendKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_UP, ctrlKeyCode, 0, 0));
         }
     }
 
     private void setupRepeat(View button, int keyCode) {
+        if (button == null) return;
+
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         v.setPressed(true);
-                        if (isSelectMode) sendCtrlKey(keyCode); else sendKey(keyCode);
+                        
+                        // Panggil fungsi yang menangani Select Mode
+                        if (isSelectMode && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
+                                             keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || 
+                                             keyCode == KeyEvent.KEYCODE_DPAD_UP || 
+                                             keyCode == KeyEvent.KEYCODE_DPAD_DOWN)) {
+                            sendCtrlKey(keyCode); 
+                        } else {
+                            sendKey(keyCode);
+                        }
                         
                         repeatRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                if (isSelectMode) sendCtrlKey(keyCode); else sendKey(keyCode);
+                                if (isSelectMode && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
+                                                     keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || 
+                                                     keyCode == KeyEvent.KEYCODE_DPAD_UP || 
+                                                     keyCode == KeyEvent.KEYCODE_DPAD_DOWN)) {
+                                    sendCtrlKey(keyCode); 
+                                } else {
+                                    sendKey(keyCode);
+                                }
                                 repeatHandler.postDelayed(this, 50);
                             }
                         };
