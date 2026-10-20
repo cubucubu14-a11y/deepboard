@@ -16,37 +16,15 @@
         android:textStyle="bold"
         android:layout_marginBottom="15dp"/>
 
-    <!-- Pengaturan Tinggi -->
-    <TextView
-        android:id="@+id/tvHeightLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tinggi Tombol: 46dp"
-        android:textColor="#AAAAAA"
-        android:textSize="14sp"/>
-    <SeekBar
-        android:id="@+id/seekHeight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:progressTint="#007BFF"/>
+    <TextView android:id="@+id/tvHeightLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tinggi: 48dp" android:textColor="#AAAAAA" android:textSize="14sp"/>
+    <SeekBar android:id="@+id/seekHeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp" android:progressTint="#007BFF"/>
 
-    <!-- Pengaturan Font -->
-    <TextView
-        android:id="@+id/tvFontLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ukuran Huruf: 16sp"
-        android:textColor="#AAAAAA"
-        android:textSize="14sp"/>
-    <SeekBar
-        android:id="@+id/seekFont"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:progressTint="#007BFF"/>
+    <TextView android:id="@+id/tvFontLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Font: 18sp" android:textColor="#AAAAAA" android:textSize="14sp"/>
+    <SeekBar android:id="@+id/seekFont" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp" android:progressTint="#007BFF"/>
 
-    <!-- TOMBOL TUTUP YANG HILANG TADI -->
+    <TextView android:id="@+id/tvGapLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jarak: 5dp" android:textColor="#AAAAAA" android:textSize="14sp"/>
+    <SeekBar android:id="@+id/seekGap" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:progressTint="#007BFF"/>
+
     <Button
         android:id="@+id/btnClosePopup"
         android:layout_width="match_parent"
