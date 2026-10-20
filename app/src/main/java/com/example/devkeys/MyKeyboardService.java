@@ -86,7 +86,7 @@ public class MyKeyboardService extends InputMethodService {
         setupRepeat(mainKeyboardView.findViewById(R.id.btnUp), KeyEvent.KEYCODE_DPAD_UP);
         setupRepeat(mainKeyboardView.findViewById(R.id.btnDown), KeyEvent.KEYCODE_DPAD_DOWN);
 
-        // --- LAYER 2: HURUF & LONG PRESS (Menggunakan FrameLayout) ---
+        // --- LAYER 2: HURUF & LONG PRESS ---
         setupLongPress(mainKeyboardView.findViewById(R.id.btnQ), "q", "1");
         setupLongPress(mainKeyboardView.findViewById(R.id.btnW), "w", "2");
         setupLongPress(mainKeyboardView.findViewById(R.id.btnE), "e", "3");
@@ -113,9 +113,11 @@ public class MyKeyboardService extends InputMethodService {
         setupTextBtn(mainKeyboardView, R.id.btnB, "b"); setupTextBtn(mainKeyboardView, R.id.btnN, "n");
         setupTextBtn(mainKeyboardView, R.id.btnM, "m");
         
+        // Spasi (Bawah Sendiri)
         setupSpaceSettings(mainKeyboardView.findViewById(R.id.btnSpasi));
 
-        setupTextBtn(mainKeyboardView, R.id.btnKoma, ","); setupTextBtn(mainKeyboardView, R.id.btnTitik, ".");
+        setupTextBtn(mainKeyboardView, R.id.btnKoma, ","); 
+        setupTextBtn(mainKeyboardView, R.id.btnTitik, ".");
         setupKeyBtn(mainKeyboardView, R.id.btnDelLetter, KeyEvent.KEYCODE_DEL);
 
         // --- LAYER 3: SIMBOL ---
@@ -127,22 +129,37 @@ public class MyKeyboardService extends InputMethodService {
             if (b != null) b.setOnClickListener(v -> sendText(val));
         }
         
-        setupTextBtn(mainKeyboardView, R.id.btnBukaKurawal, "{");
-        setupTextBtn(mainKeyboardView, R.id.btnTutupKurawal, "}");
+        setupTextBtn(mainKeyboardView, R.id.btnAt, "@");
+        setupTextBtn(mainKeyboardView, R.id.btnHash, "#");
+        setupTextBtn(mainKeyboardView, R.id.btnDollar, "$");
+        setupTextBtn(mainKeyboardView, R.id.btnPercent, "%");
+        setupTextBtn(mainKeyboardView, R.id.btnAmpersand, "&");
+        setupTextBtn(mainKeyboardView, R.id.btnStar, "*");
+        setupTextBtn(mainKeyboardView, R.id.btnMinus, "-");
+        setupTextBtn(mainKeyboardView, R.id.btnPlus, "+");
         setupTextBtn(mainKeyboardView, R.id.btnBukaKurung, "(");
         setupTextBtn(mainKeyboardView, R.id.btnTutupKurung, ")");
+        
+        setupTextBtn(mainKeyboardView, R.id.btnBukaKurawal, "{");
+        setupTextBtn(mainKeyboardView, R.id.btnTutupKurawal, "}");
         setupTextBtn(mainKeyboardView, R.id.btnBukaSiku, "[");
         setupTextBtn(mainKeyboardView, R.id.btnTutupSiku, "]");
         setupTextBtn(mainKeyboardView, R.id.btnKurang, "<");
         setupTextBtn(mainKeyboardView, R.id.btnLebih, ">");
         setupTextBtn(mainKeyboardView, R.id.btnSamaDengan, "=");
-        setupTextBtn(mainKeyboardView, R.id.btnTambah, "+");
+        setupTextBtn(mainKeyboardView, R.id.btnSlash, "/");
+        setupTextBtn(mainKeyboardView, R.id.btnTanya, "?");
+        setupTextBtn(mainKeyboardView, R.id.btnSeru, "!");
         
+        setupTextBtn(mainKeyboardView, R.id.btnKomaSymbol, ",");
         setupTextBtn(mainKeyboardView, R.id.btnStrip, "_");
         setupTextBtn(mainKeyboardView, R.id.btnPetik2, "\"");
         setupTextBtn(mainKeyboardView, R.id.btnPetik1, "'");
         setupTextBtn(mainKeyboardView, R.id.btnTitikKoma, ";");
         setupTextBtn(mainKeyboardView, R.id.btnTitikDua, ":");
+        setupTextBtn(mainKeyboardView, R.id.btnTilde, "~");
+        setupTextBtn(mainKeyboardView, R.id.btnBacktick, "`");
+        setupTextBtn(mainKeyboardView, R.id.btnPipe, "|");
         setupTextBtn(mainKeyboardView, R.id.btnSpasiSymbol, " ");
 
         return mainKeyboardView;
@@ -249,7 +266,6 @@ public class MyKeyboardService extends InputMethodService {
         settingsPopup.showAtLocation(mainKeyboardView, Gravity.CENTER, 0, 0);
     }
 
-    // --- FUNGSI APPLY SIZE YANG SUDAH DIPERBARUI ---
     private void applyCustomSize(View view, int heightDp, int fontSp) {
         float density = getResources().getDisplayMetrics().density;
         int heightPx = (int) (heightDp * density);
@@ -261,7 +277,6 @@ public class MyKeyboardService extends InputMethodService {
             }
         }
 
-        // Jika itu Button atau FrameLayout (Tombol dengan 2 teks)
         if (view instanceof Button || view instanceof FrameLayout) {
             ViewGroup.LayoutParams params = view.getLayoutParams();
             if (params != null) {
@@ -270,16 +285,13 @@ public class MyKeyboardService extends InputMethodService {
             }
         }
 
-        // Mengatur ukuran teks
         if (view instanceof TextView) {
             TextView tv = (TextView) view;
             if ("main_text".equals(tv.getTag())) {
                 tv.setTextSize(fontSp);
             } else if ("sub_text".equals(tv.getTag())) {
-                // Angka kecil dibuat sedikit lebih kecil dari huruf utama
                 tv.setTextSize(Math.max(8, fontSp - 6)); 
             } else if (view instanceof Button) {
-                // Tombol biasa (Shortcut, Angka, dll)
                 tv.setTextSize(Math.max(10, fontSp - 4)); 
             }
         }
