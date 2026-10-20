@@ -38,7 +38,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- LAYER 2: HURUF -->
+    <!-- LAYER 2: HURUF (MENGGUNAKAN FRAMELAYOUT UNTUK ANGKA KECIL) -->
     <LinearLayout
         android:id="@+id/layerAlpha"
         android:layout_width="match_parent"
@@ -47,31 +47,110 @@
         android:visibility="gone">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="4dp">
-            <Button android:id="@+id/btnQ" android:text="q" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnW" android:text="w" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnE" android:text="e" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnR" android:text="r" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnT" android:text="t" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnY" android:text="y" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnU" android:text="u" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnI" android:text="i" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnO" android:text="o" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnP" android:text="p" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
+            <!-- Q -->
+            <FrameLayout android:id="@+id/btnQ" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="q" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- W -->
+            <FrameLayout android:id="@+id/btnW" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="w" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- E -->
+            <FrameLayout android:id="@+id/btnE" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="e" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- R -->
+            <FrameLayout android:id="@+id/btnR" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="r" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- T -->
+            <FrameLayout android:id="@+id/btnT" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="t" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- Y -->
+            <FrameLayout android:id="@+id/btnY" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="y" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="6" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- U -->
+            <FrameLayout android:id="@+id/btnU" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="u" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- I -->
+            <FrameLayout android:id="@+id/btnI" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="i" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- O -->
+            <FrameLayout android:id="@+id/btnO" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="o" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="9" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- P -->
+            <FrameLayout android:id="@+id/btnP" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="p" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
         </LinearLayout>
 
+        <!-- Baris A-L -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="4dp" android:paddingLeft="8dp" android:paddingRight="8dp">
-            <Button android:id="@+id/btnA" android:text="a" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnS" android:text="s" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnD" android:text="d" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnF" android:text="f" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnG" android:text="g" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnH" android:text="h" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnJ" android:text="j" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnK" android:text="k" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
-            <Button android:id="@+id/btnL" android:text="l" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
+            <!-- A -->
+            <FrameLayout android:id="@+id/btnA" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="a" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- S -->
+            <FrameLayout android:id="@+id/btnS" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="s" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="#" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- D -->
+            <FrameLayout android:id="@+id/btnD" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="d" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- F -->
+            <FrameLayout android:id="@+id/btnF" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="f" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="%" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- G -->
+            <FrameLayout android:id="@+id/btnG" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="g" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&amp;" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- H -->
+            <FrameLayout android:id="@+id/btnH" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="h" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- J -->
+            <FrameLayout android:id="@+id/btnJ" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="j" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- K -->
+            <FrameLayout android:id="@+id/btnK" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="k" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="*" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- L -->
+            <FrameLayout android:id="@+id/btnL" android:background="@drawable/bg_btn_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp">
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="l" android:gravity="center" android:textColor="#E3E3E3" android:textSize="16sp" android:tag="main_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="/" android:layout_gravity="top|end" android:padding="4dp" android:textColor="#AAAAAA" android:textSize="10sp" android:tag="sub_text"/>
+            </FrameLayout>
+            <!-- DEL -->
             <Button android:id="@+id/btnDelLetter" android:text="DEL" android:textSize="10sp" android:textColor="#FFFFFF" android:background="@drawable/bg_btn_red" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="46dp" android:layout_margin="2dp"/>
         </LinearLayout>
 
+        <!-- Baris Z-M -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/btnToSymbol" android:text="123" android:textSize="12sp" android:textColor="#FFFFFF" android:background="@drawable/bg_btn_grey" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
             <Button android:id="@+id/btnZ" android:text="z" android:textSize="16sp" android:textColor="#E3E3E3" android:background="@drawable/bg_btn_dark" android:stateListAnimator="@null" android:layout_width="0dp" android:layout_weight="1" android:layout_height="46dp" android:layout_margin="2dp"/>
