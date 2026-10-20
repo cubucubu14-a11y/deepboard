@@ -121,7 +121,7 @@ public class MyKeyboardService extends InputMethodService {
         setupKeyBtn(mainKeyboardView, R.id.btnDelLetter, KeyEvent.KEYCODE_DEL);
         setupKeyBtn(mainKeyboardView, R.id.btnEnterAlpha, KeyEvent.KEYCODE_ENTER);
 
-        View btnShiftAlpha = mainKeyboardView.findViewById(R.id.btnShiftAlpha);
+        Button btnShiftAlpha = mainKeyboardView.findViewById(R.id.btnShiftAlpha);
         if (btnShiftAlpha != null) {
             btnShiftAlpha.setOnClickListener(v -> {
                 isSelectMode = !isSelectMode;
